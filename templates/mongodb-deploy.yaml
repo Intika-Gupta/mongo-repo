@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: {{ .Values.mongod.replicaCount }}
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: {{ .Values.mongod.image.repositry }}:{{ .Values.mongod.image.tag | default .Chart.AppVersion }}
+          ports:
+            - containerPort: {{ .Values.mongod.service.port }}
+              name: mongod-port
